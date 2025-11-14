@@ -2,25 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>RoleSync – Simple Discord Role Automation for Paid Communities</title>
+  <title>RoleSync – Discord Role Automation for Paid Communities</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="RoleSync automatically assigns and removes Discord roles based on your Stripe subscriptions. Perfect for coaches, community leaders, and creators."
+    content="RoleSync automatically assigns and removes Discord roles based on your Stripe subscriptions. Perfect for coaches, community leaders, and creators running paid communities."
   />
 
   <style>
     :root {
-      --bg: #050816;
-      --bg-alt: #090f24;
-      --accent: #ff8b3d;
-      --accent-soft: rgba(255, 139, 61, 0.15);
-      --text: #f9fafb;
-      --muted: #a5b4fc;
-      --border: #1f2937;
+      /* Brand palette */
+      --bg: #05060b;
+      --bg-elevated: #10111a;
+      --bg-soft: #151724;
+      --bg-card: rgba(16, 17, 26, 0.96);
+
+      --primary: #5b3cfb;
+      --primary-soft: rgba(91, 60, 251, 0.18);
+      --accent: #14b8a6;
+
+      --text: #f5f7fa;
+      --text-muted: #aeb6cf;
+      --text-soft: #7c8297;
+
+      --border-subtle: rgba(148, 163, 184, 0.2);
+      --border-strong: rgba(148, 163, 184, 0.35);
+
       --danger: #f97373;
-      --shadow-soft: 0 22px 45px rgba(0, 0, 0, 0.65);
-      --radius-xl: 18px;
+      --success: #22c55e;
+
+      --shadow-soft: 0 22px 45px rgba(0, 0, 0, 0.7);
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-pill: 999px;
     }
 
     * {
@@ -30,10 +44,13 @@
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        sans-serif;
+      background:
+        radial-gradient(circle at top, #1e1e24 0, #05060b 60%, #020308 100%);
       color: var(--text);
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     a {
@@ -42,36 +59,39 @@
     }
 
     .page {
-      max-width: 1080px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 24px 16px 64px;
+      padding: 28px 18px 72px;
     }
+
+    /* Header / brand */
 
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 18px;
       margin-bottom: 32px;
-      gap: 16px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #f97316, #e11d48 55%, #0f172a 100%);
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-pill);
+      background: radial-gradient(circle at 25% 15%, #f97316, #e11d48 50%, #050816 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 24px rgba(248, 113, 113, 0.5);
+      box-shadow: 0 0 30px rgba(91, 60, 251, 0.42);
       font-weight: 700;
       font-size: 18px;
+      letter-spacing: 0.06em;
     }
 
     .brand-text {
@@ -83,28 +103,41 @@
     .brand-title {
       font-weight: 600;
       letter-spacing: 0.03em;
+      font-size: 15px;
     }
 
     .brand-sub {
       font-size: 12px;
-      color: var(--muted);
+      color: var(--text-soft);
     }
 
     .header-cta {
       display: flex;
       gap: 12px;
       align-items: center;
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .pill {
-      border-radius: 999px;
-      padding: 4px 10px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: #cbd5f5;
+      border-radius: var(--radius-pill);
+      padding: 5px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: var(--text-muted);
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--success);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
     }
 
     .pill span {
@@ -114,8 +147,8 @@
 
     .btn-primary,
     .btn-ghost {
-      border-radius: 999px;
-      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      padding: 9px 18px;
       border: 0;
       cursor: pointer;
       font-size: 13px;
@@ -124,92 +157,100 @@
       align-items: center;
       gap: 8px;
       white-space: nowrap;
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        background 0.12s ease, filter 0.12s ease;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #f97316, #ec4899);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #0b1020;
-      box-shadow: 0 12px 30px rgba(248, 113, 113, 0.45);
+      box-shadow: 0 18px 40px rgba(91, 60, 251, 0.55);
     }
 
     .btn-primary:hover {
-      filter: brightness(1.05);
+      filter: brightness(1.06);
       transform: translateY(-1px);
+      box-shadow: 0 22px 55px rgba(91, 60, 251, 0.65);
     }
 
     .btn-ghost {
-      background: rgba(15, 23, 42, 0.6);
-      color: var(--muted);
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--text-muted);
+      border: 1px solid rgba(148, 163, 184, 0.55);
     }
 
     .btn-ghost:hover {
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(21, 24, 39, 0.95);
+      color: var(--text);
     }
+
+    /* Hero */
 
     main {
       display: grid;
-      grid-template-columns: 3fr 2.2fr;
-      gap: 28px;
-      align-items: center;
-      margin-bottom: 40px;
+      grid-template-columns: minmax(0, 3.3fr) minmax(0, 2.4fr);
+      gap: 30px;
+      align-items: stretch;
+      margin-bottom: 42px;
     }
 
     @media (max-width: 880px) {
       main {
         grid-template-columns: 1fr;
       }
+
       header {
         flex-direction: column;
         align-items: flex-start;
       }
+
       .header-cta {
-        align-self: stretch;
+        width: 100%;
         justify-content: space-between;
       }
     }
 
     .hero-eyebrow {
-      font-size: 12px;
-      letter-spacing: 0.18em;
+      font-size: 11px;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 12px;
+      color: var(--text-soft);
+      margin-bottom: 14px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
     }
 
     .hero-eyebrow span {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(20, 184, 166, 0.9);
     }
 
     .hero-title {
-      font-size: clamp(28px, 4vw, 34px);
+      font-size: clamp(28px, 4.1vw, 36px);
       line-height: 1.15;
       font-weight: 700;
       margin-bottom: 16px;
     }
 
     .hero-title span {
-      background: linear-gradient(135deg, #f97316, #ec4899);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       -webkit-background-clip: text;
       color: transparent;
     }
 
     .hero-sub {
       font-size: 15px;
-      color: #cbd5f5;
+      color: var(--text-muted);
       max-width: 36rem;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .hero-sub strong {
-      color: #e5e7eb;
+      color: var(--text);
       font-weight: 500;
     }
 
@@ -218,12 +259,12 @@
       flex-wrap: wrap;
       gap: 12px;
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .hero-meta {
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-soft);
       display: flex;
       align-items: center;
       gap: 6px;
@@ -246,68 +287,72 @@
     .hero-badge {
       font-size: 11px;
       padding: 6px 10px;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(55, 65, 81, 0.8);
-      color: #cbd5f5;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--text-muted);
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
     .hero-badge span {
-      font-size: 14px;
+      font-size: 13px;
     }
 
+    /* Right card */
+
     .card-right {
-      background: radial-gradient(circle at top, #111827 0, #020617 100%);
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: radial-gradient(circle at 0% 0%, rgba(91, 60, 251, 0.22), transparent 55%),
+                  radial-gradient(circle at 120% 20%, rgba(20, 184, 166, 0.22), transparent 55%),
+                  var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-strong);
       padding: 18px 18px 16px;
       box-shadow: var(--shadow-soft);
       position: relative;
       overflow: hidden;
     }
 
-    .card-right::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background: radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.16), transparent 55%),
-                  radial-gradient(circle at 120% 20%, rgba(236, 72, 153, 0.16), transparent 55%);
-      opacity: 0.8;
-      pointer-events: none;
-    }
-
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       position: relative;
       z-index: 1;
     }
 
     .card-title {
-      font-size: 13px;
-      color: var(--muted);
+      font-size: 12px;
+      color: var(--text-soft);
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
     }
 
     .status-pill {
       font-size: 11px;
       padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.15);
-      color: #6ee7b7;
-      border: 1px solid rgba(45, 212, 191, 0.6);
+      border-radius: var(--radius-pill);
+      background: rgba(22, 163, 74, 0.14);
+      color: #86efac;
+      border: 1px solid rgba(52, 211, 153, 0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
     }
 
     .card-body {
-      border-radius: 14px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(55, 65, 81, 0.85);
+      border-radius: var(--radius-md);
+      background: rgba(8, 11, 22, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
       padding: 10px 12px;
       position: relative;
       z-index: 1;
@@ -319,18 +364,19 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
+      gap: 12px;
     }
 
     .card-label {
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: #9ca3af;
+      color: var(--text-soft);
     }
 
     .card-value {
       font-weight: 600;
-      color: #e5e7eb;
+      color: var(--text);
     }
 
     .card-divider {
@@ -352,8 +398,8 @@
     .avatar {
       width: 20px;
       height: 20px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #6366f1, #0ea5e9);
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       border: 1px solid #020617;
       margin-left: -6px;
       display: flex;
@@ -369,23 +415,28 @@
 
     .card-footnote {
       font-size: 11px;
-      color: #9ca3af;
+      color: var(--text-soft);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .card-footnote strong {
-      color: #e5e7eb;
+      color: var(--text);
       font-weight: 500;
     }
+
+    /* Sections */
 
     .section {
       margin-top: 40px;
       padding: 22px 18px;
-      border-radius: var(--radius-xl);
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(55, 65, 81, 0.9);
+      border-radius: var(--radius-lg);
+      background: var(--bg-soft);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
     }
 
     .section-header {
@@ -404,9 +455,11 @@
 
     .section-sub {
       font-size: 13px;
-      color: #9ca3af;
+      color: var(--text-soft);
       max-width: 34rem;
     }
+
+    /* Features */
 
     .feature-grid {
       display: grid;
@@ -423,23 +476,23 @@
 
     .feature-card {
       padding: 14px 13px;
-      border-radius: 14px;
+      border-radius: var(--radius-md);
       border: 1px solid rgba(55, 65, 81, 0.9);
-      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent 55%);
+      background: radial-gradient(circle at top left, var(--primary-soft), transparent 55%);
       font-size: 13px;
     }
 
     .feature-icon {
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      background: rgba(31, 41, 55, 0.95);
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-pill);
+      background: rgba(31, 41, 55, 0.96);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      font-size: 14px;
       margin-bottom: 8px;
-      color: var(--accent);
+      color: var(--primary);
     }
 
     .feature-title {
@@ -449,9 +502,11 @@
     }
 
     .feature-text {
-      color: #9ca3af;
+      color: var(--text-soft);
       font-size: 12px;
     }
+
+    /* How it works */
 
     .how-grid {
       display: grid;
@@ -469,13 +524,13 @@
     .how-step {
       border-radius: 12px;
       padding: 12px 12px 10px;
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.95);
       border: 1px dashed rgba(75, 85, 99, 0.9);
     }
 
     .how-step-num {
       font-size: 11px;
-      color: var(--muted);
+      color: var(--text-soft);
       margin-bottom: 4px;
       text-transform: uppercase;
       letter-spacing: 0.15em;
@@ -488,8 +543,10 @@
 
     .how-step-text {
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-soft);
     }
+
+    /* Pricing + FAQ */
 
     .pricing-row {
       display: flex;
@@ -512,12 +569,12 @@
 
     .price-period {
       font-size: 13px;
-      color: #9ca3af;
+      color: var(--text-soft);
     }
 
     .price-note {
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-soft);
     }
 
     .faq-grid {
@@ -545,15 +602,17 @@
 
     .faq-a {
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-soft);
     }
+
+    /* Footer */
 
     footer {
       margin-top: 30px;
       padding-top: 16px;
       border-top: 1px dashed rgba(55, 65, 81, 0.9);
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-soft);
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
@@ -561,7 +620,7 @@
     }
 
     footer a {
-      color: #a5b4fc;
+      color: var(--primary);
     }
 
     .footer-links {
@@ -593,7 +652,9 @@
 
       <div class="header-cta">
         <div class="pill">
-          <span>Live</span> · Stripe + Discord wired in
+          <span class="pill-dot"></span>
+          <span>Live</span>
+          <span>Stripe + Discord wired in</span>
         </div>
         <button class="btn-ghost" type="button" onclick="goToCheckout()">Dashboard Login</button>
       </div>
@@ -609,8 +670,8 @@
         </h1>
 
         <p class="hero-sub">
-          RoleSync connects <strong>Stripe</strong> subscriptions to your <strong>Discord</strong> server. 
-          When someone pays, they get their role. When they cancel or fail billing, access is removed. 
+          RoleSync connects <strong>Stripe</strong> subscriptions to your <strong>Discord</strong> server.
+          When someone pays, they get their role. When they cancel or fail billing, access is removed.
           Clean, predictable, and hands-off.
         </p>
 
@@ -618,7 +679,8 @@
           <button class="btn-primary" type="button" onclick="goToCheckout()">
             Start RoleSync – $9.99 / month
           </button>
-          <button class="btn-ghost" type="button" onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">
+          <button class="btn-ghost" type="button"
+            onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">
             See how it works
           </button>
         </div>
@@ -638,7 +700,10 @@
       <aside class="card-right" aria-hidden="true">
         <div class="card-header">
           <div class="card-title">Live subscription events</div>
-          <div class="status-pill">Webhook verified</div>
+          <div class="status-pill">
+            <span class="status-pill-dot"></span>
+            Webhook verified
+          </div>
         </div>
 
         <div class="card-body">
@@ -680,7 +745,8 @@
         <div>
           <h2 class="section-title">Why teams use RoleSync</h2>
           <p class="section-sub">
-            Your members pay to be in your world. RoleSync makes sure Discord access always matches reality, without you (or your moderators) babysitting roles.
+            Your members pay to be in your world. RoleSync makes sure Discord access always matches reality,
+            without you (or your moderators) babysitting roles.
           </p>
         </div>
       </div>
@@ -690,7 +756,8 @@
           <div class="feature-icon">⚡</div>
           <div class="feature-title">Hands-off role automation</div>
           <p class="feature-text">
-            When Stripe says "paid", RoleSync adds the role. When subscriptions cancel, expire, or fail, RoleSync quietly removes it.
+            When Stripe says "paid", RoleSync adds the role. When subscriptions cancel, expire, or fail,
+            RoleSync quietly removes it.
           </p>
         </div>
 
@@ -706,7 +773,8 @@
           <div class="feature-icon">🔐</div>
           <div class="feature-title">Safe & Stripe-native</div>
           <p class="feature-text">
-            Uses Stripe's official webhooks (checkout.session.completed, customer.subscription.created, customer.subscription.deleted) and Discord's OAuth + bot API.
+            Uses Stripe's official webhooks (checkout.session.completed, customer.subscription.created,
+            customer.subscription.deleted) and Discord's OAuth + bot API.
           </p>
         </div>
       </div>
@@ -728,7 +796,8 @@
           <div class="how-step-num">Step 1</div>
           <div class="how-step-title">Connect Stripe & Discord</div>
           <p class="how-step-text">
-            You give RoleSync access to your Stripe account and add the RoleSync bot to your Discord server with permission to manage one role.
+            You give RoleSync access to your Stripe account and add the RoleSync bot to your Discord server with
+            permission to manage one role.
           </p>
         </div>
 
@@ -736,7 +805,7 @@
           <div class="how-step-num">Step 2</div>
           <div class="how-step-title">Link product → role</div>
           <p class="how-step-text">
-            Choose the Stripe subscription price and the Discord role (for example: <strong>Paid Member</strong>). 
+            Choose the Stripe subscription price and the Discord role (for example: <strong>Paid Member</strong>).
             That link becomes the "truth" for RoleSync.
           </p>
         </div>
@@ -745,7 +814,8 @@
           <div class="how-step-num">Step 3</div>
           <div class="how-step-title">Share your checkout link</div>
           <p class="how-step-text">
-            Send your Stripe checkout link to your members. RoleSync handles the rest: assigning roles, removing them on cancellation, and keeping logs so you always know what happened.
+            Send your Stripe checkout link to your members. RoleSync handles the rest: assigning roles, removing them
+            on cancellation, and keeping logs so you always know what happened.
           </p>
         </div>
       </div>
@@ -757,7 +827,8 @@
         <div>
           <h2 class="section-title">Pricing</h2>
           <p class="section-sub">
-            One flat price while RoleSync is small and focused. You can grow your community without guessing what your bill will be.
+            One flat price while RoleSync is small and focused. You can grow your community without guessing
+            what your bill will be.
           </p>
         </div>
       </div>
@@ -784,28 +855,31 @@
         <div class="faq-item">
           <div class="faq-q">What happens when someone cancels?</div>
           <div class="faq-a">
-            Stripe fires <code>customer.subscription.deleted</code>. RoleSync listens, finds the linked Discord user, and removes the paid role automatically.
+            Stripe fires <code>customer.subscription.deleted</code>. RoleSync listens, finds the linked Discord user,
+            and removes the paid role automatically.
           </div>
         </div>
 
         <div class="faq-item">
           <div class="faq-q">Is this safe for my Discord server?</div>
           <div class="faq-a">
-            The bot only needs permission to manage one role. You keep full control over your server and can remove the bot at any time.
+            The bot only needs permission to manage one role. You keep full control over your server and can remove
+            the bot at any time.
           </div>
         </div>
 
         <div class="faq-item">
           <div class="faq-q">Can I stop using RoleSync?</div>
           <div class="faq-a">
-            Yes. You can cancel your RoleSync subscription in Stripe at any time. Your existing Discord roles won't be touched after that.
+            Yes. You can cancel your RoleSync subscription in Stripe at any time. Your existing Discord roles won't
+            be touched after that.
           </div>
         </div>
 
         <div class="faq-item">
           <div class="faq-q">Do you plan to support more tiers?</div>
           <div class="faq-a">
-            Yes. The first version focuses on a single product → single role flow. 
+            Yes. The first version focuses on a single product → single role flow.
             Multi-tier (Bronze / Silver / Gold) setups are planned once the core stays rock-solid in production.
           </div>
         </div>
@@ -826,4 +900,3 @@
   </script>
 </body>
 </html>
-
