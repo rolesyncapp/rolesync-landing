@@ -1,829 +1,1787 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8" />
-  <title>RoleSync – Simple Discord Role Automation for Paid Communities</title>
+
+  <title>GuildPass – Automated Discord Access for Paid Communities</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta
+
     name="description"
-    content="RoleSync automatically assigns and removes Discord roles based on your Stripe subscriptions. Perfect for coaches, community leaders, and creators."
+
+    content="GuildPass connects Stripe to Discord so paid members automatically gain – and lose – access based on billing. No manual role management, ever."
+
   />
 
+
+
+  <!-- Open Graph / Social Media -->
+
+  <meta property="og:title" content="GuildPass – Automated Discord Access for Paid Communities" />
+
+  <meta property="og:description" content="GuildPass connects Stripe to Discord so paid members automatically gain – and lose – access based on billing. No manual role management, ever." />
+
+  <meta property="og:type" content="website" />
+
+
+
+  <!-- Fonts -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+
+    rel="stylesheet"
+
+  />
+
+
+
   <style>
+
     :root {
-      --bg: #050816;
-      --bg-alt: #090f24;
-      --accent: #ff8b3d;
-      --accent-soft: rgba(255, 139, 61, 0.15);
-      --text: #f9fafb;
-      --muted: #a5b4fc;
-      --border: #1f2937;
+
+      --bg: #1e1e24;
+
+      --bg-elevated: #23232b;
+
+      --bg-soft: #252736;
+
+      --accent: #5b3cfb;
+
+      --accent-soft: rgba(91, 60, 251, 0.24);
+
+      --accent-teal: #14b8a6;
+
+      --accent-teal-soft: rgba(20, 184, 166, 0.24);
+
+      --text: #f5f7fa;
+
+      --muted: #9ca3af;
+
+      --border-subtle: #2f3640;
+
       --danger: #f97373;
-      --shadow-soft: 0 22px 45px rgba(0, 0, 0, 0.65);
-      --radius-xl: 18px;
+
+      --shadow-soft: 0 28px 60px rgba(0, 0, 0, 0.7);
+
+      --radius-xl: 20px;
+
+      --radius-lg: 16px;
+
+      --radius-pill: 999px;
+
     }
+
+
 
     * {
+
       box-sizing: border-box;
+
       margin: 0;
+
       padding: 0;
+
     }
+
+
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+      background: radial-gradient(circle at top, #111827 0, #050711 45%, #000 100%);
+
       color: var(--text);
+
       line-height: 1.6;
+
+      -webkit-font-smoothing: antialiased;
+
     }
+
+
 
     a {
+
       color: inherit;
+
       text-decoration: none;
+
     }
+
+
 
     .page {
-      max-width: 1080px;
+
+      max-width: 1120px;
+
       margin: 0 auto;
-      padding: 24px 16px 64px;
+
+      padding: 24px 16px 72px;
+
     }
+
+
 
     header {
+
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
-      margin-bottom: 32px;
+
+      margin-bottom: 40px;
+
       gap: 16px;
+
     }
+
+
 
     .brand {
+
       display: flex;
+
       align-items: center;
-      gap: 10px;
+
+      gap: 12px;
+
     }
+
+
 
     .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #f97316, #e11d48 55%, #0f172a 100%);
+
+      width: 36px;
+
+      height: 36px;
+
+      border-radius: 14px;
+
+      background: radial-gradient(circle at 30% 20%, #5b3cfb, #14b8a6 55%, #0b1020 100%);
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
-      box-shadow: 0 0 24px rgba(248, 113, 113, 0.5);
+
+      box-shadow: 0 0 24px rgba(91, 60, 251, 0.6);
+
+      font-family: "Space Grotesk", system-ui, sans-serif;
+
       font-weight: 700;
+
       font-size: 18px;
+
+      letter-spacing: 0.04em;
+
     }
+
+
 
     .brand-text {
+
       display: flex;
+
       flex-direction: column;
+
       gap: 2px;
+
     }
+
+
 
     .brand-title {
+
+      font-family: "Space Grotesk", system-ui, sans-serif;
+
       font-weight: 600;
-      letter-spacing: 0.03em;
+
+      letter-spacing: 0.08em;
+
+      text-transform: uppercase;
+
+      font-size: 14px;
+
     }
+
+
 
     .brand-sub {
+
       font-size: 12px;
+
       color: var(--muted);
+
     }
+
+
 
     .header-cta {
+
       display: flex;
+
       gap: 12px;
+
       align-items: center;
+
       font-size: 14px;
+
     }
+
+
 
     .pill {
-      border-radius: 999px;
-      padding: 4px 10px;
+
+      border-radius: var(--radius-pill);
+
+      padding: 5px 12px;
+
       border: 1px solid rgba(148, 163, 184, 0.4);
+
       color: #cbd5f5;
+
       font-size: 11px;
+
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+
+      letter-spacing: 0.14em;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 6px;
+
     }
+
+
 
     .pill span {
-      color: var(--accent);
-      font-weight: 600;
+
+      width: 7px;
+
+      height: 7px;
+
+      border-radius: 999px;
+
+      background: #22c55e;
+
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+
     }
+
+
 
     .btn-primary,
+
     .btn-ghost {
-      border-radius: 999px;
-      padding: 8px 18px;
+
+      border-radius: var(--radius-pill);
+
+      padding: 9px 20px;
+
       border: 0;
+
       cursor: pointer;
-      font-size: 13px;
+
+      font-size: 14px;
+
       font-weight: 500;
+
       display: inline-flex;
+
       align-items: center;
+
       gap: 8px;
+
       white-space: nowrap;
+
+      transition: all 0.14s ease-out;
+
     }
+
+
 
     .btn-primary {
-      background: linear-gradient(135deg, #f97316, #ec4899);
-      color: #0b1020;
-      box-shadow: 0 12px 30px rgba(248, 113, 113, 0.45);
+
+      background: linear-gradient(135deg, #5b3cfb, #7c3aed);
+
+      color: #f9fafb;
+
+      box-shadow: 0 18px 40px rgba(91, 60, 251, 0.45);
+
     }
+
+
 
     .btn-primary:hover {
-      filter: brightness(1.05);
+
+      filter: brightness(1.06);
+
       transform: translateY(-1px);
+
     }
+
+
 
     .btn-ghost {
-      background: rgba(15, 23, 42, 0.6);
+
+      background: rgba(15, 23, 42, 0.7);
+
       color: var(--muted);
-      border: 1px solid rgba(148, 163, 184, 0.5);
+
+      border: 1px solid rgba(148, 163, 184, 0.4);
+
     }
+
+
 
     .btn-ghost:hover {
-      background: rgba(15, 23, 42, 0.9);
+
+      background: rgba(15, 23, 42, 0.95);
+
+      color: #e5e7eb;
+
     }
+
+
 
     main {
+
       display: grid;
+
       grid-template-columns: 3fr 2.2fr;
+
       gap: 28px;
+
       align-items: center;
+
       margin-bottom: 40px;
+
     }
 
+
+
     @media (max-width: 880px) {
-      main {
-        grid-template-columns: 1fr;
-      }
+
       header {
+
         flex-direction: column;
+
         align-items: flex-start;
+
       }
+
       .header-cta {
+
         align-self: stretch;
+
         justify-content: space-between;
+
       }
+
+      main {
+
+        grid-template-columns: 1fr;
+
+      }
+
     }
+
+
 
     .hero-eyebrow {
+
       font-size: 12px;
-      letter-spacing: 0.18em;
+
+      letter-spacing: 0.24em;
+
       text-transform: uppercase;
+
       color: var(--muted);
-      margin-bottom: 12px;
+
+      margin-bottom: 14px;
+
       display: inline-flex;
+
       align-items: center;
-      gap: 8px;
+
+      gap: 10px;
+
     }
+
+
 
     .hero-eyebrow span {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+
+      width: 60px;
+
+      height: 1px;
+
+      background: linear-gradient(90deg, rgba(91, 60, 251, 0.7), rgba(20, 184, 166, 0));
+
     }
+
+
 
     .hero-title {
-      font-size: clamp(28px, 4vw, 34px);
-      line-height: 1.15;
+
+      font-family: "Space Grotesk", system-ui, sans-serif;
+
+      font-size: clamp(30px, 4.1vw, 36px);
+
+      line-height: 1.1;
+
       font-weight: 700;
-      margin-bottom: 16px;
+
+      margin-bottom: 18px;
+
     }
+
+
 
     .hero-title span {
-      background: linear-gradient(135deg, #f97316, #ec4899);
+
+      background: linear-gradient(135deg, #5b3cfb, #14b8a6);
+
       -webkit-background-clip: text;
+
       color: transparent;
+
     }
+
+
 
     .hero-sub {
+
       font-size: 15px;
+
       color: #cbd5f5;
-      max-width: 36rem;
+
+      max-width: 38rem;
+
       margin-bottom: 18px;
+
     }
+
+
 
     .hero-sub strong {
+
       color: #e5e7eb;
+
       font-weight: 500;
+
     }
+
+
 
     .hero-cta-row {
+
       display: flex;
+
       flex-wrap: wrap;
+
       gap: 12px;
+
       align-items: center;
+
       margin-bottom: 14px;
+
     }
+
+
 
     .hero-meta {
+
       font-size: 12px;
+
       color: #9ca3af;
+
       display: flex;
+
       align-items: center;
+
       gap: 6px;
+
     }
+
+
 
     .hero-meta span {
+
       width: 4px;
+
       height: 4px;
+
       border-radius: 999px;
+
       background: rgba(148, 163, 184, 0.8);
+
     }
+
+
 
     .hero-badge-row {
+
       display: flex;
+
       flex-wrap: wrap;
+
       gap: 8px;
+
       margin-top: 16px;
+
     }
+
+
 
     .hero-badge {
+
       font-size: 11px;
+
       padding: 6px 10px;
+
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(55, 65, 81, 0.8);
+
+      background: rgba(24, 30, 52, 0.98);
+
+      border: 1px solid rgba(55, 65, 81, 0.9);
+
       color: #cbd5f5;
+
       display: inline-flex;
+
       align-items: center;
+
       gap: 6px;
+
     }
+
+
 
     .hero-badge span {
+
       font-size: 14px;
+
     }
+
+
+
+    /* Right card / pipeline */
 
     .card-right {
-      background: radial-gradient(circle at top, #111827 0, #020617 100%);
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      padding: 18px 18px 16px;
-      box-shadow: var(--shadow-soft);
+
       position: relative;
+
+      background: radial-gradient(circle at top, #181827 0, #050816 100%);
+
+      border-radius: var(--radius-xl);
+
+      border: 1px solid rgba(148, 163, 184, 0.35);
+
+      padding: 18px 18px 16px;
+
+      box-shadow: var(--shadow-soft);
+
       overflow: hidden;
+
     }
+
+
 
     .card-right::before {
+
       content: "";
+
       position: absolute;
+
       inset: -40%;
-      background: radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.16), transparent 55%),
-                  radial-gradient(circle at 120% 20%, rgba(236, 72, 153, 0.16), transparent 55%);
-      opacity: 0.8;
+
+      background:
+
+        radial-gradient(circle at 0% 0%, rgba(91, 60, 251, 0.24), transparent 55%),
+
+        radial-gradient(circle at 120% 20%, rgba(20, 184, 166, 0.26), transparent 55%);
+
+      opacity: 0.9;
+
       pointer-events: none;
+
     }
+
+
+
+    .card-inner {
+
+      position: relative;
+
+      z-index: 1;
+
+    }
+
+
 
     .card-header {
+
       display: flex;
+
       justify-content: space-between;
+
       align-items: center;
+
       margin-bottom: 10px;
-      position: relative;
-      z-index: 1;
+
     }
+
+
 
     .card-title {
-      font-size: 13px;
+
+      font-size: 12px;
+
       color: var(--muted);
+
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+
+      letter-spacing: 0.16em;
+
     }
+
+
 
     .status-pill {
+
       font-size: 11px;
+
       padding: 4px 8px;
+
       border-radius: 999px;
-      background: rgba(16, 185, 129, 0.15);
+
+      background: rgba(20, 184, 166, 0.12);
+
       color: #6ee7b7;
-      border: 1px solid rgba(45, 212, 191, 0.6);
+
+      border: 1px solid rgba(45, 212, 191, 0.7);
+
     }
+
+
+
+    .pipeline {
+
+      display: grid;
+
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+
+      gap: 8px;
+
+      align-items: center;
+
+      margin-bottom: 14px;
+
+    }
+
+
+
+    .pipeline-node {
+
+      border-radius: 999px;
+
+      padding: 10px 10px;
+
+      background: rgba(15, 23, 42, 0.92);
+
+      border: 1px solid rgba(55, 65, 81, 0.95);
+
+      font-size: 11px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 2px;
+
+    }
+
+
+
+    .pipeline-node-label {
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.16em;
+
+      font-size: 10px;
+
+      color: var(--muted);
+
+    }
+
+
+
+    .pipeline-node-name {
+
+      font-size: 12px;
+
+      font-weight: 500;
+
+    }
+
+
+
+    .pipeline-arrow {
+
+      text-align: center;
+
+      font-size: 16px;
+
+      color: var(--accent-teal);
+
+    }
+
+
 
     .card-body {
-      border-radius: 14px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(55, 65, 81, 0.85);
+
+      border-radius: 16px;
+
+      background: rgba(15, 23, 42, 0.96);
+
+      border: 1px solid rgba(55, 65, 81, 0.9);
+
       padding: 10px 12px;
-      position: relative;
-      z-index: 1;
+
       font-size: 12px;
+
     }
+
+
 
     .card-body-row {
+
       display: flex;
+
       justify-content: space-between;
+
       align-items: center;
+
       margin-bottom: 10px;
+
     }
+
+
 
     .card-label {
+
       font-size: 11px;
+
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+
+      letter-spacing: 0.16em;
+
       color: #9ca3af;
+
     }
+
+
 
     .card-value {
+
       font-weight: 600;
+
       color: #e5e7eb;
+
     }
+
+
 
     .card-divider {
+
       border-bottom: 1px dashed rgba(75, 85, 99, 0.9);
-      margin: 8px 0 12px;
+
+      margin: 8px 0 10px;
+
     }
 
-    .card-avatars {
+
+
+    .avatar-row {
+
       display: flex;
+
+      justify-content: space-between;
+
       align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
+
     }
+
+
 
     .avatar-group {
+
       display: flex;
+
+      align-items: center;
+
     }
+
+
 
     .avatar {
-      width: 20px;
-      height: 20px;
+
+      width: 22px;
+
+      height: 22px;
+
       border-radius: 999px;
-      background: linear-gradient(135deg, #6366f1, #0ea5e9);
+
+      background: linear-gradient(135deg, #5b3cfb, #14b8a6);
+
       border: 1px solid #020617;
-      margin-left: -6px;
+
+      margin-left: -7px;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: 11px;
+
       color: #e5e7eb;
+
     }
+
+
 
     .avatar:first-child {
+
       margin-left: 0;
+
     }
+
+
 
     .card-footnote {
+
       font-size: 11px;
+
       color: #9ca3af;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+
+      margin-top: 8px;
+
     }
+
+
 
     .card-footnote strong {
+
       color: #e5e7eb;
+
       font-weight: 500;
+
     }
+
+
+
+    /* Sections */
+
+
 
     .section {
-      margin-top: 40px;
+
+      margin-top: 44px;
+
       padding: 22px 18px;
+
       border-radius: var(--radius-xl);
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(55, 65, 81, 0.9);
+
+      background: rgba(15, 23, 42, 0.95);
+
+      border: 1px solid rgba(55, 65, 81, 0.95);
+
     }
+
+
 
     .section-header {
+
       display: flex;
+
       justify-content: space-between;
+
       flex-wrap: wrap;
+
       gap: 10px;
+
       align-items: center;
+
       margin-bottom: 18px;
+
     }
+
+
 
     .section-title {
-      font-size: 18px;
+
+      font-family: "Space Grotesk", system-ui, sans-serif;
+
+      font-size: 20px;
+
       font-weight: 600;
+
     }
+
+
 
     .section-sub {
+
       font-size: 13px;
+
       color: #9ca3af;
+
       max-width: 34rem;
+
     }
+
+
 
     .feature-grid {
+
       display: grid;
+
       grid-template-columns: repeat(3, minmax(0, 1fr));
+
       gap: 14px;
-      margin-top: 6px;
+
+      margin-top: 8px;
+
     }
 
+
+
     @media (max-width: 880px) {
+
       .feature-grid {
+
         grid-template-columns: 1fr;
+
       }
+
     }
+
+
 
     .feature-card {
+
       padding: 14px 13px;
+
       border-radius: 14px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent 55%);
+
+      border: 1px solid rgba(55, 65, 81, 0.95);
+
+      background:
+
+        radial-gradient(circle at top left, rgba(91, 60, 251, 0.12), transparent 55%),
+
+        radial-gradient(circle at bottom right, rgba(20, 184, 166, 0.1), transparent 55%);
+
       font-size: 13px;
+
     }
+
+
 
     .feature-icon {
-      width: 22px;
-      height: 22px;
+
+      width: 24px;
+
+      height: 24px;
+
       border-radius: 999px;
+
       background: rgba(31, 41, 55, 0.95);
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
-      font-size: 13px;
+
+      font-size: 14px;
+
       margin-bottom: 8px;
+
       color: var(--accent);
+
     }
+
+
 
     .feature-title {
+
       font-weight: 600;
+
       margin-bottom: 4px;
+
       font-size: 13px;
+
     }
+
+
 
     .feature-text {
+
       color: #9ca3af;
+
       font-size: 12px;
+
     }
 
-    .how-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      font-size: 13px;
-    }
 
-    @media (max-width: 880px) {
-      .how-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .how-step {
-      border-radius: 12px;
-      padding: 12px 12px 10px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px dashed rgba(75, 85, 99, 0.9);
-    }
-
-    .how-step-num {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-    }
-
-    .how-step-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .how-step-text {
-      font-size: 12px;
-      color: #9ca3af;
-    }
 
     .pricing-row {
+
       display: flex;
+
       flex-wrap: wrap;
+
       align-items: center;
+
       gap: 18px;
+
       font-size: 14px;
+
+      margin-top: 4px;
+
     }
+
+
 
     .price-main {
+
       display: flex;
+
       align-items: baseline;
+
       gap: 6px;
+
     }
+
+
 
     .price-amount {
-      font-size: 24px;
+
+      font-size: 26px;
+
       font-weight: 700;
+
+      font-family: "Space Grotesk", system-ui, sans-serif;
+
     }
+
+
 
     .price-period {
+
       font-size: 13px;
+
       color: #9ca3af;
+
     }
+
+
 
     .price-note {
+
       font-size: 12px;
+
       color: #9ca3af;
+
+      margin-top: 4px;
+
     }
+
+
 
     .faq-grid {
+
       display: grid;
+
       grid-template-columns: repeat(2, minmax(0, 1fr));
+
       gap: 16px;
+
       font-size: 13px;
+
+      margin-top: 18px;
+
     }
+
+
 
     @media (max-width: 880px) {
+
       .faq-grid {
+
         grid-template-columns: 1fr;
+
       }
+
     }
+
+
 
     .faq-item {
-      padding: 10px 0;
+
+      padding-top: 10px;
+
       border-top: 1px dashed rgba(55, 65, 81, 0.9);
+
     }
+
+
 
     .faq-q {
+
       font-weight: 500;
+
       margin-bottom: 4px;
+
     }
+
+
 
     .faq-a {
+
       font-size: 12px;
+
       color: #9ca3af;
+
     }
+
+
 
     footer {
+
       margin-top: 30px;
+
       padding-top: 16px;
+
       border-top: 1px dashed rgba(55, 65, 81, 0.9);
+
       font-size: 12px;
+
       color: #9ca3af;
+
       display: flex;
+
       justify-content: space-between;
+
       flex-wrap: wrap;
+
       gap: 8px;
+
     }
+
+
 
     footer a {
+
       color: #a5b4fc;
+
     }
+
+
 
     .footer-links {
+
       display: flex;
+
       gap: 12px;
+
       flex-wrap: wrap;
+
     }
+
   </style>
 
+
+
   <script>
+
     function goToCheckout() {
-      // For now, send them to your working checkout test page on the backend.
-      // Later you can replace this with a direct POST to /checkout/create-session if you prefer.
-      window.location.href = "https://rolesync-webhook.onrender.com/checkout/test";
+
+      window.location.href = "https://rolesync-webhook.onrender.com/checkout";
+
     }
+
+
+
+    function scrollToHow() {
+
+      const el = document.getElementById("how-it-works");
+
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+
+    }
+
   </script>
+
 </head>
 
+
+
 <body>
+
   <div class="page">
+
     <header>
+
       <div class="brand">
-        <div class="brand-logo">R</div>
+
+        <div class="brand-logo">GP</div>
+
         <div class="brand-text">
-          <div class="brand-title">RoleSync</div>
-          <div class="brand-sub">Discord role automation for paid communities</div>
+
+          <div class="brand-title">GUILDPASS</div>
+
+          <div class="brand-sub">Automated Discord access for paid communities</div>
+
         </div>
+
       </div>
+
+
 
       <div class="header-cta">
+
         <div class="pill">
-          <span>Live</span> · Stripe + Discord wired in
+
+          <span></span> Live · Stripe → Discord wired in
+
         </div>
-        <button class="btn-ghost" type="button" onclick="goToCheckout()">Dashboard Login</button>
+
+        <button class="btn-ghost" type="button" onclick="goToCheckout()">
+
+          Dashboard Login
+
+        </button>
+
       </div>
+
     </header>
 
+
+
     <main>
+
       <section>
-        <div class="hero-eyebrow"><span></span>Built for coaches, creators, & community leaders</div>
+
+        <div class="hero-eyebrow">
+
+          <span></span> Built for creators, coaches & paid communities
+
+        </div>
+
+
 
         <h1 class="hero-title">
-          Stop manually updating Discord roles.<br />
-          <span>RoleSync does it for you.</span>
+
+          Stop manually managing Discord access.<br />
+
+          <span>GuildPass automates it for you.</span>
+
         </h1>
 
+
+
         <p class="hero-sub">
-          RoleSync connects <strong>Stripe</strong> subscriptions to your <strong>Discord</strong> server. 
-          When someone pays, they get their role. When they cancel or fail billing, access is removed. 
-          Clean, predictable, and hands-off.
+
+          GuildPass connects <strong>Stripe</strong> to your <strong>Discord</strong> server.
+
+          When someone pays, they get access. When they cancel or fail billing,
+
+          access is quietly removed. Clean, predictable, and hands-off.
+
         </p>
 
+
+
         <div class="hero-cta-row">
+
           <button class="btn-primary" type="button" onclick="goToCheckout()">
-            Start RoleSync – $9.99 / month
+
+            Start GuildPass – $9.99 / month
+
           </button>
-          <button class="btn-ghost" type="button" onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">
+
+          <button class="btn-ghost" type="button" onclick="scrollToHow()">
+
             See how it works
+
           </button>
+
         </div>
+
+
 
         <div class="hero-meta">
+
           <span></span>
-          No contracts · Cancel anytime · Built by an ICU RN for simplicity & reliability
+
+          No contracts · Cancel anytime · Built for Discord communities
+
         </div>
+
+
 
         <div class="hero-badge-row">
-          <div class="hero-badge"><span>✅</span> Handles checkout.session.completed</div>
+
+          <div class="hero-badge"><span>✅</span> checkout.session.completed</div>
+
           <div class="hero-badge"><span>🛡️</span> customer.subscription.created / deleted</div>
+
           <div class="hero-badge"><span>⚙️</span> Auto-assign & remove Discord roles</div>
+
         </div>
+
       </section>
 
+
+
       <aside class="card-right" aria-hidden="true">
-        <div class="card-header">
-          <div class="card-title">Live subscription events</div>
-          <div class="status-pill">Webhook verified</div>
-        </div>
 
-        <div class="card-body">
-          <div class="card-body-row">
-            <div>
-              <div class="card-label">Latest Event</div>
-              <div class="card-value">checkout.session.completed</div>
-            </div>
-            <div>
-              <div class="card-label">Role Applied</div>
-              <div class="card-value">Paid Member</div>
-            </div>
+        <div class="card-inner">
+
+          <div class="card-header">
+
+            <div class="card-title">Live membership pipeline</div>
+
+            <div class="status-pill">Webhook verified</div>
+
           </div>
 
-          <div class="card-divider"></div>
 
-          <div class="card-avatars">
-            <div class="avatar-group">
-              <div class="avatar">AF</div>
-              <div class="avatar">JG</div>
-              <div class="avatar">LK</div>
+
+          <div class="pipeline">
+
+            <div class="pipeline-node">
+
+              <div class="pipeline-node-label">Source</div>
+
+              <div class="pipeline-node-name">Stripe</div>
+
             </div>
+
+            <div class="pipeline-arrow">⟶</div>
+
+            <div class="pipeline-node">
+
+              <div class="pipeline-node-label">Engine</div>
+
+              <div class="pipeline-node-name">GuildPass</div>
+
+            </div>
+
+            <div class="pipeline-arrow">⟶</div>
+
+            <div class="pipeline-node">
+
+              <div class="pipeline-node-label">Destination</div>
+
+              <div class="pipeline-node-name">Discord</div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="card-body">
+
+            <div class="card-body-row">
+
+              <div>
+
+                <div class="card-label">Latest event</div>
+
+                <div class="card-value">checkout.session.completed</div>
+
+              </div>
+
+              <div>
+
+                <div class="card-label">Role applied</div>
+
+                <div class="card-value">Premium Member</div>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="card-divider"></div>
+
+
+
+            <div class="avatar-row">
+
+              <div class="avatar-group">
+
+                <div class="avatar">AF</div>
+
+                <div class="avatar">JG</div>
+
+                <div class="avatar">LK</div>
+
+              </div>
+
+              <div class="card-footnote">
+
+                <span>New members synced in seconds.</span>
+
+              </div>
+
+            </div>
+
+
+
             <div class="card-footnote">
-              <span>New members synced in seconds.</span>
+
+              <strong>Stripe</strong> → GuildPass → <strong>Discord</strong><br/>
+
+              Zero spreadsheets. Zero manual updates.
+
             </div>
+
           </div>
 
-          <div class="card-footnote">
-            <span><strong>Stripe</strong> → RoleSync → <strong>Discord</strong></span>
-            <span>Zero spreadsheets. Zero manual updates.</span>
-          </div>
         </div>
+
       </aside>
+
     </main>
 
-    <!-- Features -->
+
+
+    <!-- Why GuildPass -->
+
     <section class="section">
+
       <div class="section-header">
+
         <div>
-          <h2 class="section-title">Why teams use RoleSync</h2>
+
+          <h2 class="section-title">Why teams use GuildPass</h2>
+
           <p class="section-sub">
-            Your members pay to be in your world. RoleSync makes sure Discord access always matches reality, without you (or your moderators) babysitting roles.
+
+            Your members pay to be in your world. GuildPass makes sure Discord access always matches reality, without you or your moderators
+
+            babysitting roles or permissions.
+
           </p>
+
         </div>
+
       </div>
+
+
 
       <div class="feature-grid">
+
         <div class="feature-card">
+
           <div class="feature-icon">⚡</div>
+
           <div class="feature-title">Hands-off role automation</div>
+
           <p class="feature-text">
-            When Stripe says "paid", RoleSync adds the role. When subscriptions cancel, expire, or fail, RoleSync quietly removes it.
+
+            When Stripe says "paid", GuildPass grants access. When subscriptions cancel, expire, or fail, GuildPass quietly revokes the role.
+
           </p>
+
         </div>
 
+
+
         <div class="feature-card">
+
           <div class="feature-icon">🧠</div>
+
           <div class="feature-title">Simple by design</div>
+
           <p class="feature-text">
-            One subscription product, one role to manage. Clean webhooks, clear logs, and no confusing dashboards.
+
+            v1 focuses on a single, rock-solid flow: paid membership ↔ Discord access. Fewer knobs, fewer bugs, less confusion.
+
           </p>
+
         </div>
 
+
+
         <div class="feature-card">
+
           <div class="feature-icon">🔐</div>
-          <div class="feature-title">Safe & Stripe-native</div>
+
+          <div class="feature-title">Safe & Discord-friendly</div>
+
           <p class="feature-text">
-            Uses Stripe's official webhooks (checkout.session.completed, customer.subscription.created, customer.subscription.deleted) and Discord's OAuth + bot API.
+
+            Uses Stripe webhooks and Discord OAuth. The bot only needs permissions to manage specific roles – you keep full control.
+
           </p>
+
         </div>
+
       </div>
+
     </section>
+
+
 
     <!-- How it works -->
+
     <section id="how-it-works" class="section">
+
       <div class="section-header">
+
         <div>
-          <h2 class="section-title">How RoleSync works</h2>
+
+          <h2 class="section-title">How GuildPass works</h2>
+
           <p class="section-sub">
-            A one-time setup, then RoleSync quietly watches Stripe and keeps your Discord server perfectly in sync.
+
+            One short setup. After that, GuildPass quietly watches Stripe and keeps your Discord roles perfectly in sync.
+
           </p>
+
         </div>
+
       </div>
 
-      <div class="how-grid">
-        <div class="how-step">
-          <div class="how-step-num">Step 1</div>
-          <div class="how-step-title">Connect Stripe & Discord</div>
-          <p class="how-step-text">
-            You give RoleSync access to your Stripe account and add the RoleSync bot to your Discord server with permission to manage one role.
+
+
+      <div class="feature-grid">
+
+        <div class="feature-card">
+
+          <div class="feature-icon">1</div>
+
+          <div class="feature-title">Connect Stripe & Discord</div>
+
+          <p class="feature-text">
+
+            Authorize your Stripe account and add the GuildPass bot to your server with permission to manage your paid role.
+
           </p>
+
         </div>
 
-        <div class="how-step">
-          <div class="how-step-num">Step 2</div>
-          <div class="how-step-title">Link product → role</div>
-          <p class="how-step-text">
-            Choose the Stripe subscription price and the Discord role (for example: <strong>Paid Member</strong>). 
-            That link becomes the "truth" for RoleSync.
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">2</div>
+
+          <div class="feature-title">Link product → role</div>
+
+          <p class="feature-text">
+
+            Choose the Stripe subscription price and the Discord role (for example: <strong>Premium Member</strong>).
+
+            That link becomes the source of truth.
+
           </p>
+
         </div>
 
-        <div class="how-step">
-          <div class="how-step-num">Step 3</div>
-          <div class="how-step-title">Share your checkout link</div>
-          <p class="how-step-text">
-            Send your Stripe checkout link to your members. RoleSync handles the rest: assigning roles, removing them on cancellation, and keeping logs so you always know what happened.
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">3</div>
+
+          <div class="feature-title">Share your checkout</div>
+
+          <p class="feature-text">
+
+            Send your Stripe checkout link to your community. GuildPass assigns roles on payment and removes them on cancellation or failed billing.
+
           </p>
+
         </div>
+
       </div>
+
     </section>
 
-    <!-- Pricing & FAQ -->
+
+
+    <!-- Pricing -->
+
     <section class="section">
+
       <div class="section-header">
+
         <div>
-          <h2 class="section-title">Pricing</h2>
+
+          <h2 class="section-title">Simple pricing for v1</h2>
+
           <p class="section-sub">
-            One flat price while RoleSync is small and focused. You can grow your community without guessing what your bill will be.
+
+            One straight-forward plan while GuildPass v1 stays focused. When v2 launches, you'll be able to upgrade into tiered options – no surprise changes.
+
           </p>
+
         </div>
+
       </div>
+
+
 
       <div class="pricing-row">
+
         <div>
+
           <div class="price-main">
+
             <div class="price-amount">$9.99</div>
+
             <div class="price-period">/ month</div>
+
           </div>
+
           <div class="price-note">
-            Unlimited members · 1 Discord server · 1 paid role.
+
+            1 Discord server · 1 paid membership flow · Unlimited members.
+
           </div>
+
         </div>
+
+
 
         <button class="btn-primary" type="button" onclick="goToCheckout()">
-          Start RoleSync now
+
+          Start GuildPass now
+
         </button>
+
       </div>
 
-      <div style="margin-top: 24px;"></div>
+
 
       <div class="faq-grid">
+
         <div class="faq-item">
+
           <div class="faq-q">What happens when someone cancels?</div>
+
           <div class="faq-a">
-            Stripe fires <code>customer.subscription.deleted</code>. RoleSync listens, finds the linked Discord user, and removes the paid role automatically.
+
+            Stripe sends a subscription update event. GuildPass listens, finds the linked Discord user, and removes the paid role automatically.
+
           </div>
+
         </div>
 
-        <div class="faq-item">
-          <div class="faq-q">Is this safe for my Discord server?</div>
-          <div class="faq-a">
-            The bot only needs permission to manage one role. You keep full control over your server and can remove the bot at any time.
-          </div>
-        </div>
+
 
         <div class="faq-item">
-          <div class="faq-q">Can I stop using RoleSync?</div>
+
+          <div class="faq-q">Do I need to give the bot admin?</div>
+
           <div class="faq-a">
-            Yes. You can cancel your RoleSync subscription in Stripe at any time. Your existing Discord roles won't be touched after that.
+
+            No. GuildPass only needs permission to manage the roles you configure. You keep ownership of your server and can revoke access at any time.
+
           </div>
+
         </div>
 
+
+
         <div class="faq-item">
-          <div class="faq-q">Do you plan to support more tiers?</div>
+
+          <div class="faq-q">Can I stop using GuildPass?</div>
+
           <div class="faq-a">
-            Yes. The first version focuses on a single product → single role flow. 
-            Multi-tier (Bronze / Silver / Gold) setups are planned once the core stays rock-solid in production.
+
+            Yes. You can cancel your subscription at any time. Existing Discord roles won't be touched after that.
+
           </div>
+
         </div>
+
+
+
+        <div class="faq-item">
+
+          <div class="faq-q">Will there be more advanced tiers?</div>
+
+          <div class="faq-a">
+
+            Yes. v2 will introduce multiple tiers (Bronze / Silver / Gold), advanced rules, and multi-server options. v1 users will be able to upgrade easily.
+
+          </div>
+
+        </div>
+
       </div>
+
     </section>
 
+
+
     <footer>
-      <div>© <span id="year"></span> RoleSync. All rights reserved.</div>
+
+      <div>© <span id="year"></span> GuildPass. All rights reserved.</div>
+
       <div class="footer-links">
+
+        <a href="#!">Status</a>
+
+        <a href="#!">Docs</a>
+
         <a href="#!" onclick="alert('Add your Terms of Service page here.')">Terms</a>
+
         <a href="#!" onclick="alert('Add your Privacy Policy page here.')">Privacy</a>
+
       </div>
+
     </footer>
+
   </div>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
 
+
+  <script>
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+  </script>
+
+</body>
+
+</html>
