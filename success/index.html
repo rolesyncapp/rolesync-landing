@@ -3,19 +3,48 @@
 <head>
   <title>Success</title>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
   <style>
     body { background: #111; color: #eee; font-family: sans-serif; text-align: center; padding-top: 50px; }
   </style>
 </head>
 <body>
-  <h1>🎉 You're Linked!</h1>
-  <p>Your Discord role has been activated.</p>
-  <a href="/" style="color:#4fa3ff;">Return home</a>
+  <div id="success-container" style="text-align:center; margin-top:80px;">
+    <h2 style="font-size:2rem; font-weight:700; margin-bottom:12px;">
+      🎉 You're Linked!
+    </h2>
+
+    <p style="font-size:1.1rem; color:#4b5563; margin-bottom:24px;">
+      Your Discord role has been activated.
+    </p>
+
+    <button
+      onclick="connectDiscord()"
+      style="margin-top: 12px; padding: 12px 24px; border-radius: 8px; border: none; background: #4F46E5; color: white; font-weight: 600; cursor: pointer; font-size: 1rem;">
+      Connect Discord
+    </button>
+
+    <div style="margin-top:20px;">
+      <a href="/" style="font-size:0.9rem; color:#6366f1; text-decoration:underline;">
+        Return home
+      </a>
+    </div>
+  </div>
 
   <script>
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 3000); // 3 seconds
+    function connectDiscord() {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session_id');
+
+      if (!sessionId) {
+        alert('Missing session_id — please restart your checkout.');
+        return;
+      }
+
+      // Use relative path - will work with current domain
+      window.location.href = `/auth/discord/start?session_id=${encodeURIComponent(sessionId)}`;
+    }
   </script>
 </body>
 </html>

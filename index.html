@@ -28,7 +28,11 @@
 
   <meta property="og:type" content="website" />
 
+  <!-- Favicon -->
 
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <link rel="shortcut icon" href="/favicon.ico" />
 
   <!-- Fonts -->
 
@@ -46,1181 +50,7 @@
 
 
 
-  <style>
-
-    :root {
-
-      --bg: #1e1e24;
-
-      --bg-elevated: #23232b;
-
-      --bg-soft: #252736;
-
-      --accent: #5b3cfb;
-
-      --accent-soft: rgba(91, 60, 251, 0.24);
-
-      --accent-teal: #14b8a6;
-
-      --accent-teal-soft: rgba(20, 184, 166, 0.24);
-
-      --text: #f5f7fa;
-
-      --muted: #9ca3af;
-
-      --border-subtle: #2f3640;
-
-      --danger: #f97373;
-
-      --shadow-soft: 0 28px 60px rgba(0, 0, 0, 0.7);
-
-      --radius-xl: 20px;
-
-      --radius-lg: 16px;
-
-      --radius-pill: 999px;
-
-    }
-
-
-
-    * {
-
-      box-sizing: border-box;
-
-      margin: 0;
-
-      padding: 0;
-
-    }
-
-
-
-    body {
-
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-
-      background: radial-gradient(circle at top, #111827 0, #050711 45%, #000 100%);
-
-      color: var(--text);
-
-      line-height: 1.6;
-
-      -webkit-font-smoothing: antialiased;
-
-    }
-
-
-
-    a {
-
-      color: inherit;
-
-      text-decoration: none;
-
-    }
-
-
-
-    .page {
-
-      max-width: 1120px;
-
-      margin: 0 auto;
-
-      padding: 24px 16px 72px;
-
-    }
-
-
-
-    header {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      margin-bottom: 40px;
-
-      gap: 16px;
-
-    }
-
-
-
-    .brand {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 12px;
-
-    }
-
-
-
-    .brand-logo {
-
-      width: 36px;
-
-      height: 36px;
-
-      border-radius: 14px;
-
-      background: radial-gradient(circle at 30% 20%, #5b3cfb, #14b8a6 55%, #0b1020 100%);
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      box-shadow: 0 0 24px rgba(91, 60, 251, 0.6);
-
-      font-family: "Space Grotesk", system-ui, sans-serif;
-
-      font-weight: 700;
-
-      font-size: 18px;
-
-      letter-spacing: 0.04em;
-
-    }
-
-
-
-    .brand-text {
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 2px;
-
-    }
-
-
-
-    .brand-title {
-
-      font-family: "Space Grotesk", system-ui, sans-serif;
-
-      font-weight: 600;
-
-      letter-spacing: 0.08em;
-
-      text-transform: uppercase;
-
-      font-size: 14px;
-
-    }
-
-
-
-    .brand-sub {
-
-      font-size: 12px;
-
-      color: var(--muted);
-
-    }
-
-
-
-    .header-cta {
-
-      display: flex;
-
-      gap: 12px;
-
-      align-items: center;
-
-      font-size: 14px;
-
-    }
-
-
-
-    .pill {
-
-      border-radius: var(--radius-pill);
-
-      padding: 5px 12px;
-
-      border: 1px solid rgba(148, 163, 184, 0.4);
-
-      color: #cbd5f5;
-
-      font-size: 11px;
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.14em;
-
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 6px;
-
-    }
-
-
-
-    .pill span {
-
-      width: 7px;
-
-      height: 7px;
-
-      border-radius: 999px;
-
-      background: #22c55e;
-
-      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
-
-    }
-
-
-
-    .btn-primary,
-
-    .btn-ghost {
-
-      border-radius: var(--radius-pill);
-
-      padding: 9px 20px;
-
-      border: 0;
-
-      cursor: pointer;
-
-      font-size: 14px;
-
-      font-weight: 500;
-
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 8px;
-
-      white-space: nowrap;
-
-      transition: all 0.14s ease-out;
-
-    }
-
-
-
-    .btn-primary {
-
-      background: linear-gradient(135deg, #5b3cfb, #7c3aed);
-
-      color: #f9fafb;
-
-      box-shadow: 0 18px 40px rgba(91, 60, 251, 0.45);
-
-    }
-
-
-
-    .btn-primary:hover {
-
-      filter: brightness(1.06);
-
-      transform: translateY(-1px);
-
-    }
-
-
-
-    .btn-ghost {
-
-      background: rgba(15, 23, 42, 0.7);
-
-      color: var(--muted);
-
-      border: 1px solid rgba(148, 163, 184, 0.4);
-
-    }
-
-
-
-    .btn-ghost:hover {
-
-      background: rgba(15, 23, 42, 0.95);
-
-      color: #e5e7eb;
-
-    }
-
-
-
-    main {
-
-      display: grid;
-
-      grid-template-columns: 3fr 2.2fr;
-
-      gap: 28px;
-
-      align-items: center;
-
-      margin-bottom: 40px;
-
-    }
-
-
-
-    @media (max-width: 880px) {
-
-      header {
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-      }
-
-      .header-cta {
-
-        align-self: stretch;
-
-        justify-content: space-between;
-
-      }
-
-      main {
-
-        grid-template-columns: 1fr;
-
-      }
-
-    }
-
-
-
-    .hero-eyebrow {
-
-      font-size: 12px;
-
-      letter-spacing: 0.24em;
-
-      text-transform: uppercase;
-
-      color: var(--muted);
-
-      margin-bottom: 14px;
-
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-    }
-
-
-
-    .hero-eyebrow span {
-
-      width: 60px;
-
-      height: 1px;
-
-      background: linear-gradient(90deg, rgba(91, 60, 251, 0.7), rgba(20, 184, 166, 0));
-
-    }
-
-
-
-    .hero-title {
-
-      font-family: "Space Grotesk", system-ui, sans-serif;
-
-      font-size: clamp(30px, 4.1vw, 36px);
-
-      line-height: 1.1;
-
-      font-weight: 700;
-
-      margin-bottom: 18px;
-
-    }
-
-
-
-    .hero-title span {
-
-      background: linear-gradient(135deg, #5b3cfb, #14b8a6);
-
-      -webkit-background-clip: text;
-
-      color: transparent;
-
-    }
-
-
-
-    .hero-sub {
-
-      font-size: 15px;
-
-      color: #cbd5f5;
-
-      max-width: 38rem;
-
-      margin-bottom: 18px;
-
-    }
-
-
-
-    .hero-sub strong {
-
-      color: #e5e7eb;
-
-      font-weight: 500;
-
-    }
-
-
-
-    .hero-cta-row {
-
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 12px;
-
-      align-items: center;
-
-      margin-bottom: 14px;
-
-    }
-
-
-
-    .hero-meta {
-
-      font-size: 12px;
-
-      color: #9ca3af;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 6px;
-
-    }
-
-
-
-    .hero-meta span {
-
-      width: 4px;
-
-      height: 4px;
-
-      border-radius: 999px;
-
-      background: rgba(148, 163, 184, 0.8);
-
-    }
-
-
-
-    .hero-badge-row {
-
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 8px;
-
-      margin-top: 16px;
-
-    }
-
-
-
-    .hero-badge {
-
-      font-size: 11px;
-
-      padding: 6px 10px;
-
-      border-radius: 999px;
-
-      background: rgba(24, 30, 52, 0.98);
-
-      border: 1px solid rgba(55, 65, 81, 0.9);
-
-      color: #cbd5f5;
-
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 6px;
-
-    }
-
-
-
-    .hero-badge span {
-
-      font-size: 14px;
-
-    }
-
-
-
-    /* Right card / pipeline */
-
-    .card-right {
-
-      position: relative;
-
-      background: radial-gradient(circle at top, #181827 0, #050816 100%);
-
-      border-radius: var(--radius-xl);
-
-      border: 1px solid rgba(148, 163, 184, 0.35);
-
-      padding: 18px 18px 16px;
-
-      box-shadow: var(--shadow-soft);
-
-      overflow: hidden;
-
-    }
-
-
-
-    .card-right::before {
-
-      content: "";
-
-      position: absolute;
-
-      inset: -40%;
-
-      background:
-
-        radial-gradient(circle at 0% 0%, rgba(91, 60, 251, 0.24), transparent 55%),
-
-        radial-gradient(circle at 120% 20%, rgba(20, 184, 166, 0.26), transparent 55%);
-
-      opacity: 0.9;
-
-      pointer-events: none;
-
-    }
-
-
-
-    .card-inner {
-
-      position: relative;
-
-      z-index: 1;
-
-    }
-
-
-
-    .card-header {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      margin-bottom: 10px;
-
-    }
-
-
-
-    .card-title {
-
-      font-size: 12px;
-
-      color: var(--muted);
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.16em;
-
-    }
-
-
-
-    .status-pill {
-
-      font-size: 11px;
-
-      padding: 4px 8px;
-
-      border-radius: 999px;
-
-      background: rgba(20, 184, 166, 0.12);
-
-      color: #6ee7b7;
-
-      border: 1px solid rgba(45, 212, 191, 0.7);
-
-    }
-
-
-
-    .pipeline {
-
-      display: grid;
-
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-
-      gap: 8px;
-
-      align-items: center;
-
-      margin-bottom: 14px;
-
-    }
-
-
-
-    .pipeline-node {
-
-      border-radius: 999px;
-
-      padding: 10px 10px;
-
-      background: rgba(15, 23, 42, 0.92);
-
-      border: 1px solid rgba(55, 65, 81, 0.95);
-
-      font-size: 11px;
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 2px;
-
-    }
-
-
-
-    .pipeline-node-label {
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.16em;
-
-      font-size: 10px;
-
-      color: var(--muted);
-
-    }
-
-
-
-    .pipeline-node-name {
-
-      font-size: 12px;
-
-      font-weight: 500;
-
-    }
-
-
-
-    .pipeline-arrow {
-
-      text-align: center;
-
-      font-size: 16px;
-
-      color: var(--accent-teal);
-
-    }
-
-
-
-    .card-body {
-
-      border-radius: 16px;
-
-      background: rgba(15, 23, 42, 0.96);
-
-      border: 1px solid rgba(55, 65, 81, 0.9);
-
-      padding: 10px 12px;
-
-      font-size: 12px;
-
-    }
-
-
-
-    .card-body-row {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      margin-bottom: 10px;
-
-    }
-
-
-
-    .card-label {
-
-      font-size: 11px;
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.16em;
-
-      color: #9ca3af;
-
-    }
-
-
-
-    .card-value {
-
-      font-weight: 600;
-
-      color: #e5e7eb;
-
-    }
-
-
-
-    .card-divider {
-
-      border-bottom: 1px dashed rgba(75, 85, 99, 0.9);
-
-      margin: 8px 0 10px;
-
-    }
-
-
-
-    .avatar-row {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-    }
-
-
-
-    .avatar-group {
-
-      display: flex;
-
-      align-items: center;
-
-    }
-
-
-
-    .avatar {
-
-      width: 22px;
-
-      height: 22px;
-
-      border-radius: 999px;
-
-      background: linear-gradient(135deg, #5b3cfb, #14b8a6);
-
-      border: 1px solid #020617;
-
-      margin-left: -7px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      font-size: 11px;
-
-      color: #e5e7eb;
-
-    }
-
-
-
-    .avatar:first-child {
-
-      margin-left: 0;
-
-    }
-
-
-
-    .card-footnote {
-
-      font-size: 11px;
-
-      color: #9ca3af;
-
-      margin-top: 8px;
-
-    }
-
-
-
-    .card-footnote strong {
-
-      color: #e5e7eb;
-
-      font-weight: 500;
-
-    }
-
-
-
-    /* Sections */
-
-
-
-    .section {
-
-      margin-top: 44px;
-
-      padding: 22px 18px;
-
-      border-radius: var(--radius-xl);
-
-      background: rgba(15, 23, 42, 0.95);
-
-      border: 1px solid rgba(55, 65, 81, 0.95);
-
-    }
-
-
-
-    .section-header {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      flex-wrap: wrap;
-
-      gap: 10px;
-
-      align-items: center;
-
-      margin-bottom: 18px;
-
-    }
-
-
-
-    .section-title {
-
-      font-family: "Space Grotesk", system-ui, sans-serif;
-
-      font-size: 20px;
-
-      font-weight: 600;
-
-    }
-
-
-
-    .section-sub {
-
-      font-size: 13px;
-
-      color: #9ca3af;
-
-      max-width: 34rem;
-
-    }
-
-
-
-    .feature-grid {
-
-      display: grid;
-
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-
-      gap: 14px;
-
-      margin-top: 8px;
-
-    }
-
-
-
-    @media (max-width: 880px) {
-
-      .feature-grid {
-
-        grid-template-columns: 1fr;
-
-      }
-
-    }
-
-
-
-    .feature-card {
-
-      padding: 14px 13px;
-
-      border-radius: 14px;
-
-      border: 1px solid rgba(55, 65, 81, 0.95);
-
-      background:
-
-        radial-gradient(circle at top left, rgba(91, 60, 251, 0.12), transparent 55%),
-
-        radial-gradient(circle at bottom right, rgba(20, 184, 166, 0.1), transparent 55%);
-
-      font-size: 13px;
-
-    }
-
-
-
-    .feature-icon {
-
-      width: 24px;
-
-      height: 24px;
-
-      border-radius: 999px;
-
-      background: rgba(31, 41, 55, 0.95);
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      font-size: 14px;
-
-      margin-bottom: 8px;
-
-      color: var(--accent);
-
-    }
-
-
-
-    .feature-title {
-
-      font-weight: 600;
-
-      margin-bottom: 4px;
-
-      font-size: 13px;
-
-    }
-
-
-
-    .feature-text {
-
-      color: #9ca3af;
-
-      font-size: 12px;
-
-    }
-
-
-
-    .pricing-row {
-
-      display: flex;
-
-      flex-wrap: wrap;
-
-      align-items: center;
-
-      gap: 18px;
-
-      font-size: 14px;
-
-      margin-top: 4px;
-
-    }
-
-
-
-    .price-main {
-
-      display: flex;
-
-      align-items: baseline;
-
-      gap: 6px;
-
-    }
-
-
-
-    .price-amount {
-
-      font-size: 26px;
-
-      font-weight: 700;
-
-      font-family: "Space Grotesk", system-ui, sans-serif;
-
-    }
-
-
-
-    .price-period {
-
-      font-size: 13px;
-
-      color: #9ca3af;
-
-    }
-
-
-
-    .price-note {
-
-      font-size: 12px;
-
-      color: #9ca3af;
-
-      margin-top: 4px;
-
-    }
-
-
-
-    .faq-grid {
-
-      display: grid;
-
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-
-      gap: 16px;
-
-      font-size: 13px;
-
-      margin-top: 18px;
-
-    }
-
-
-
-    @media (max-width: 880px) {
-
-      .faq-grid {
-
-        grid-template-columns: 1fr;
-
-      }
-
-    }
-
-
-
-    .faq-item {
-
-      padding-top: 10px;
-
-      border-top: 1px dashed rgba(55, 65, 81, 0.9);
-
-    }
-
-
-
-    .faq-q {
-
-      font-weight: 500;
-
-      margin-bottom: 4px;
-
-    }
-
-
-
-    .faq-a {
-
-      font-size: 12px;
-
-      color: #9ca3af;
-
-    }
-
-
-
-    footer {
-
-      margin-top: 30px;
-
-      padding-top: 16px;
-
-      border-top: 1px dashed rgba(55, 65, 81, 0.9);
-
-      font-size: 12px;
-
-      color: #9ca3af;
-
-      display: flex;
-
-      justify-content: space-between;
-
-      flex-wrap: wrap;
-
-      gap: 8px;
-
-    }
-
-
-
-    footer a {
-
-      color: #a5b4fc;
-
-    }
-
-
-
-    .footer-links {
-
-      display: flex;
-
-      gap: 12px;
-
-      flex-wrap: wrap;
-
-    }
-
-  </style>
+  <link rel="stylesheet" href="/static/styles.css" />
 
 
 
@@ -1228,7 +58,7 @@
 
     function goToCheckout() {
 
-      window.location.href = "https://rolesync-webhook.onrender.com/checkout";
+      window.location.href = "/checkout";
 
     }
 
@@ -1250,539 +80,701 @@
 
 <body>
 
-  <div class="page">
+  <!-- Navbar -->
 
-    <header>
+  <nav class="navbar">
 
-      <div class="brand">
+    <div class="navbar-container">
 
-        <div class="brand-logo">GP</div>
+      <div class="navbar-brand">
 
-        <div class="brand-text">
+        <div class="logo-circle">GP</div>
 
-          <div class="brand-title">GUILDPASS</div>
+        <span class="logo-text">GuildPass</span>
 
-          <div class="brand-sub">Automated Discord access for paid communities</div>
+      </div>
+
+      <div class="navbar-links">
+
+        <a href="#features" class="nav-link">Features</a>
+
+        <a href="#how-it-works" class="nav-link">How it works</a>
+
+        <a href="#pricing" class="nav-link">Pricing</a>
+
+        <a href="#faq" class="nav-link">FAQ</a>
+
+        <a href="/auth/discord/start" class="btn-primary btn-nav">Dashboard</a>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+
+
+  <!-- Hero Section -->
+
+  <section class="hero">
+
+    <div class="container">
+
+      <div class="hero-grid">
+
+        <div class="hero-content">
+
+          <div class="hero-pill">For paid Discord communities</div>
+
+          <h1 class="hero-title">Run your paid Discord community on autopilot.</h1>
+
+          <p class="hero-subtitle">GuildPass automatically verifies who paid, assigns roles, and removes access when billing fails — so you don't have to babysit your server.</p>
+
+          <div class="hero-cta">
+
+            <a href="/auth/discord/start" class="btn-primary btn-large">Connect Discord & Get Started</a>
+
+            <a href="#how-it-works" class="btn-secondary btn-large">View dashboard demo</a>
+
+          </div>
+
+          <p class="hero-proof">Perfect for coaches, streamers, DAOs, and private masterminds.</p>
+
+        </div>
+
+        <div class="hero-visual">
+
+          <div class="dashboard-card">
+
+            <div class="dashboard-header">
+
+              <h3 class="dashboard-title">GuildPass Dashboard</h3>
+
+            </div>
+
+            <div class="dashboard-body">
+
+              <div class="status-tiles">
+
+                <div class="status-tile">
+
+                  <div class="status-indicator status-success"></div>
+
+                  <span>Discord server – Connected</span>
+
+                </div>
+
+                <div class="status-tile">
+
+                  <div class="status-indicator status-success"></div>
+
+                  <span>Paid member role – Configured</span>
+
+                </div>
+
+                <div class="status-tile">
+
+                  <div class="status-indicator status-success"></div>
+
+                  <span>Stripe Connect – Live</span>
+
+                </div>
+
+              </div>
+
+              <div class="join-link-field">
+
+                <div class="join-link-label">Join link</div>
+
+                <div class="join-link-input-group">
+
+                  <input type="text" class="join-link-input" value="https://guildpass.app/join/abc123xyz" readonly />
+
+                  <button class="btn-copy">Copy link</button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
 
         </div>
 
       </div>
 
+    </div>
 
+  </section>
 
-      <div class="header-cta">
 
-        <div class="pill">
 
-          <span></span> Live · Stripe → Discord wired in
+  <!-- Features Section -->
 
-        </div>
+  <section id="features" class="features">
 
-        <button class="btn-ghost" type="button" onclick="goToCheckout()">
-
-          Dashboard Login
-
-        </button>
-
-      </div>
-
-    </header>
-
-
-
-    <main>
-
-      <section>
-
-        <div class="hero-eyebrow">
-
-          <span></span> Built for creators, coaches & paid communities
-
-        </div>
-
-
-
-        <h1 class="hero-title">
-
-          Stop manually managing Discord access.<br />
-
-          <span>GuildPass automates it for you.</span>
-
-        </h1>
-
-
-
-        <p class="hero-sub">
-
-          GuildPass connects <strong>Stripe</strong> to your <strong>Discord</strong> server.
-
-          When someone pays, they get access. When they cancel or fail billing,
-
-          access is quietly removed. Clean, predictable, and hands-off.
-
-        </p>
-
-
-
-        <div class="hero-cta-row">
-
-          <button class="btn-primary" type="button" onclick="goToCheckout()">
-
-            Start GuildPass – $9.99 / month
-
-          </button>
-
-          <button class="btn-ghost" type="button" onclick="scrollToHow()">
-
-            See how it works
-
-          </button>
-
-        </div>
-
-
-
-        <div class="hero-meta">
-
-          <span></span>
-
-          No contracts · Cancel anytime · Built for Discord communities
-
-        </div>
-
-
-
-        <div class="hero-badge-row">
-
-          <div class="hero-badge"><span>✅</span> checkout.session.completed</div>
-
-          <div class="hero-badge"><span>🛡️</span> customer.subscription.created / deleted</div>
-
-          <div class="hero-badge"><span>⚙️</span> Auto-assign & remove Discord roles</div>
-
-        </div>
-
-      </section>
-
-
-
-      <aside class="card-right" aria-hidden="true">
-
-        <div class="card-inner">
-
-          <div class="card-header">
-
-            <div class="card-title">Live membership pipeline</div>
-
-            <div class="status-pill">Webhook verified</div>
-
-          </div>
-
-
-
-          <div class="pipeline">
-
-            <div class="pipeline-node">
-
-              <div class="pipeline-node-label">Source</div>
-
-              <div class="pipeline-node-name">Stripe</div>
-
-            </div>
-
-            <div class="pipeline-arrow">⟶</div>
-
-            <div class="pipeline-node">
-
-              <div class="pipeline-node-label">Engine</div>
-
-              <div class="pipeline-node-name">GuildPass</div>
-
-            </div>
-
-            <div class="pipeline-arrow">⟶</div>
-
-            <div class="pipeline-node">
-
-              <div class="pipeline-node-label">Destination</div>
-
-              <div class="pipeline-node-name">Discord</div>
-
-            </div>
-
-          </div>
-
-
-
-          <div class="card-body">
-
-            <div class="card-body-row">
-
-              <div>
-
-                <div class="card-label">Latest event</div>
-
-                <div class="card-value">checkout.session.completed</div>
-
-              </div>
-
-              <div>
-
-                <div class="card-label">Role applied</div>
-
-                <div class="card-value">Premium Member</div>
-
-              </div>
-
-            </div>
-
-
-
-            <div class="card-divider"></div>
-
-
-
-            <div class="avatar-row">
-
-              <div class="avatar-group">
-
-                <div class="avatar">AF</div>
-
-                <div class="avatar">JG</div>
-
-                <div class="avatar">LK</div>
-
-              </div>
-
-              <div class="card-footnote">
-
-                <span>New members synced in seconds.</span>
-
-              </div>
-
-            </div>
-
-
-
-            <div class="card-footnote">
-
-              <strong>Stripe</strong> → GuildPass → <strong>Discord</strong><br/>
-
-              Zero spreadsheets. Zero manual updates.
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </aside>
-
-    </main>
-
-
-
-    <!-- Why GuildPass -->
-
-    <section class="section">
+    <div class="container">
 
       <div class="section-header">
 
-        <div>
+        <h2 class="section-title">Why creators use GuildPass</h2>
 
-          <h2 class="section-title">Why teams use GuildPass</h2>
-
-          <p class="section-sub">
-
-            Your members pay to be in your world. GuildPass makes sure Discord access always matches reality, without you or your moderators
-
-            babysitting roles or permissions.
-
-          </p>
-
-        </div>
+        <p class="section-subtitle">Reduce admin work and churn by automating Discord access based on real payment status.</p>
 
       </div>
 
-
-
-      <div class="feature-grid">
+      <div class="features-grid">
 
         <div class="feature-card">
 
           <div class="feature-icon">⚡</div>
 
-          <div class="feature-title">Hands-off role automation</div>
+          <h3 class="feature-title">Automatic role syncing</h3>
 
-          <p class="feature-text">
-
-            When Stripe says "paid", GuildPass grants access. When subscriptions cancel, expire, or fail, GuildPass quietly revokes the role.
-
-          </p>
+          <p class="feature-text">Members who pay get instant access. Cancel or fail a payment? Their role is removed automatically.</p>
 
         </div>
 
-
-
         <div class="feature-card">
 
-          <div class="feature-icon">🧠</div>
+          <div class="feature-icon">🧹</div>
 
-          <div class="feature-title">Simple by design</div>
+          <h3 class="feature-title">Failed payment cleanup</h3>
 
-          <p class="feature-text">
-
-            v1 focuses on a single, rock-solid flow: paid membership ↔ Discord access. Fewer knobs, fewer bugs, less confusion.
-
-          </p>
+          <p class="feature-text">No more ghosts in your paid channels. Keep your community accurate in real-time.</p>
 
         </div>
 
+        <div class="feature-card">
 
+          <div class="feature-icon">🌐</div>
+
+          <h3 class="feature-title">Multi-server ready</h3>
+
+          <p class="feature-text">Run multiple communities or tiers from one dashboard.</p>
+
+        </div>
 
         <div class="feature-card">
 
-          <div class="feature-icon">🔐</div>
+          <div class="feature-icon">💳</div>
 
-          <div class="feature-title">Safe & Discord-friendly</div>
+          <h3 class="feature-title">Stripe-native billing</h3>
 
-          <p class="feature-text">
-
-            Uses Stripe webhooks and Discord OAuth. The bot only needs permissions to manage specific roles – you keep full control.
-
-          </p>
+          <p class="feature-text">Leverage the full power of Stripe subscriptions while GuildPass handles Discord.</p>
 
         </div>
 
       </div>
 
-    </section>
+    </div>
+
+  </section>
 
 
 
-    <!-- How it works -->
+  <!-- How It Works Section -->
 
-    <section id="how-it-works" class="section">
+  <section id="how-it-works" class="how-it-works">
+
+    <div class="container">
 
       <div class="section-header">
 
-        <div>
+        <h2 class="section-title">How GuildPass works</h2>
 
-          <h2 class="section-title">How GuildPass works</h2>
+      </div>
 
-          <p class="section-sub">
+      <div class="steps-grid">
 
-            One short setup. After that, GuildPass quietly watches Stripe and keeps your Discord roles perfectly in sync.
+        <div class="step-card">
 
-          </p>
+          <div class="step-number">1</div>
+
+          <h3 class="step-title">Connect Discord</h3>
+
+          <p class="step-text">Authorize GuildPass to manage roles in your server.</p>
+
+        </div>
+
+        <div class="step-card">
+
+          <div class="step-number">2</div>
+
+          <h3 class="step-title">Connect Stripe</h3>
+
+          <p class="step-text">Link your Stripe account and choose a subscription price.</p>
+
+        </div>
+
+        <div class="step-card">
+
+          <div class="step-number">3</div>
+
+          <h3 class="step-title">Share your join link</h3>
+
+          <p class="step-text">Members subscribe via Stripe; GuildPass handles roles automatically.</p>
 
         </div>
 
       </div>
 
+    </div>
 
-
-      <div class="feature-grid">
-
-        <div class="feature-card">
-
-          <div class="feature-icon">1</div>
-
-          <div class="feature-title">Connect Stripe & Discord</div>
-
-          <p class="feature-text">
-
-            Authorize your Stripe account and add the GuildPass bot to your server with permission to manage your paid role.
-
-          </p>
-
-        </div>
+  </section>
 
 
 
-        <div class="feature-card">
+  <!-- Pricing Section -->
 
-          <div class="feature-icon">2</div>
+  <section id="pricing" class="gp-section gp-section-pricing">
 
-          <div class="feature-title">Link product → role</div>
+    <div class="gp-section-header">
 
-          <p class="feature-text">
+      <h2 class="gp-section-title">Simple pricing for serious communities</h2>
 
-            Choose the Stripe subscription price and the Discord role (for example: <strong>Premium Member</strong>).
+      <p class="gp-section-subtitle">
 
-            That link becomes the source of truth.
+        Start in test mode for free. When you're ready, switch to live payments in minutes.
 
-          </p>
+      </p>
 
-        </div>
-
-
-
-        <div class="feature-card">
-
-          <div class="feature-icon">3</div>
-
-          <div class="feature-title">Share your checkout</div>
-
-          <p class="feature-text">
-
-            Send your Stripe checkout link to your community. GuildPass assigns roles on payment and removes them on cancellation or failed billing.
-
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
+    </div>
 
 
 
-    <!-- Pricing -->
+    <div class="pricing-toggle-wrapper">
 
-    <section class="section">
+      <div class="pricing-toggle" data-billing="monthly">
 
-      <div class="section-header">
+        <button
 
-        <div>
+          type="button"
 
-          <h2 class="section-title">Simple pricing for v1</h2>
+          class="pricing-toggle-btn is-active"
 
-          <p class="section-sub">
+          data-billing="monthly"
 
-            One straight-forward plan while GuildPass v1 stays focused. When v2 launches, you'll be able to upgrade into tiered options – no surprise changes.
+        >
 
-          </p>
+          Monthly
 
-        </div>
+        </button>
 
-      </div>
+        <button
 
+          type="button"
 
+          class="pricing-toggle-btn"
 
-      <div class="pricing-row">
+          data-billing="yearly"
 
-        <div>
+        >
 
-          <div class="price-main">
-
-            <div class="price-amount">$9.99</div>
-
-            <div class="price-period">/ month</div>
-
-          </div>
-
-          <div class="price-note">
-
-            1 Discord server · 1 paid membership flow · Unlimited members.
-
-          </div>
-
-        </div>
-
-
-
-        <button class="btn-primary" type="button" onclick="goToCheckout()">
-
-          Start GuildPass now
+          Yearly <span class="pricing-toggle-save">2 months free</span>
 
         </button>
 
       </div>
 
+    </div>
 
+
+
+    <div class="pricing-grid">
+
+      <!-- Starter -->
+
+      <div class="pricing-card">
+
+        <div class="pricing-card-header">
+
+          <span class="pricing-pill">Getting started</span>
+
+          <h3 class="pricing-name">Starter</h3>
+
+          <div class="pricing-price-row">
+
+            <span class="pricing-currency">$</span>
+
+            <span
+
+              class="pricing-amount"
+
+              data-monthly="19"
+
+              data-yearly="190"
+
+            >19</span>
+
+            <span class="pricing-period">/mo</span>
+
+          </div>
+
+          <p class="pricing-tagline">
+
+            Perfect for one growing paid Discord community.
+
+          </p>
+
+        </div>
+
+        <ul class="pricing-features">
+
+          <li>1 Discord server</li>
+
+          <li>Automatic role syncing</li>
+
+          <li>Stripe subscription billing</li>
+
+          <li>Webhook-driven role removal</li>
+
+          <li>Standard email support</li>
+
+        </ul>
+
+        <a href="/auth/discord/start" class="gp-btn gp-btn-secondary pricing-cta">
+
+          Get started
+
+        </a>
+
+      </div>
+
+
+
+      <!-- Pro -->
+
+      <div class="pricing-card pricing-card-pro">
+
+        <div class="pricing-card-header">
+
+          <span class="pricing-pill pricing-pill-popular">Most popular</span>
+
+          <h3 class="pricing-name">Pro</h3>
+
+          <div class="pricing-price-row">
+
+            <span class="pricing-currency">$</span>
+
+            <span
+
+              class="pricing-amount"
+
+              data-monthly="49"
+
+              data-yearly="490"
+
+            >49</span>
+
+            <span class="pricing-period">/mo</span>
+
+          </div>
+
+          <p class="pricing-tagline">
+
+            For creators running multiple paid communities.
+
+          </p>
+
+        </div>
+
+        <ul class="pricing-features">
+
+          <li>Everything in Starter</li>
+
+          <li>Up to 3 Discord servers (per account)</li>
+
+          <li>Faster webhook priority</li>
+
+          <li>Early access to new features</li>
+
+          <li>Priority email support</li>
+
+        </ul>
+
+        <a href="/auth/discord/start" class="gp-btn gp-btn-primary pricing-cta">
+
+          Upgrade to Pro
+
+        </a>
+
+      </div>
+
+
+
+      <!-- Agency -->
+
+      <div class="pricing-card">
+
+        <div class="pricing-card-header">
+
+          <span class="pricing-pill">For teams &amp; agencies</span>
+
+          <h3 class="pricing-name">Agency</h3>
+
+          <div class="pricing-price-row">
+
+            <span class="pricing-currency">$</span>
+
+            <span
+
+              class="pricing-amount"
+
+              data-monthly="99"
+
+              data-yearly="990"
+
+            >99</span>
+
+            <span class="pricing-period">/mo</span>
+
+          </div>
+
+          <p class="pricing-tagline">
+
+            Perfect for agencies, studios, and large communities.
+
+          </p>
+
+        </div>
+
+        <ul class="pricing-features">
+
+          <li>Everything in Pro</li>
+
+          <li>Guidance for managing multiple Stripe products</li>
+
+          <li>Hands-on onboarding assistance</li>
+
+          <li>Higher webhook priority for large communities</li>
+
+          <li>High-priority support queue</li>
+
+        </ul>
+
+        <a href="/auth/discord/start" class="gp-btn gp-btn-secondary pricing-cta">
+
+          Talk to us
+
+        </a>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- Inline script: controls monthly/yearly toggle -->
+
+    <script>
+
+      (function () {
+
+        const toggle = document.querySelector('.pricing-toggle');
+
+        if (!toggle) return;
+
+
+
+        const options = toggle.querySelectorAll('.pricing-toggle-btn');
+
+        const cards = document.querySelectorAll('#pricing .pricing-card');
+
+        const BILLING = {
+
+          monthly: { period: '/mo' },
+
+          yearly: { period: '/year' }
+
+        };
+
+
+
+        function setBillingMode(mode) {
+
+          toggle.dataset.billing = mode;
+
+
+
+          options.forEach((btn) => {
+
+            btn.classList.toggle(
+
+              'is-active',
+
+              btn.dataset.billing === mode
+
+            );
+
+          });
+
+
+
+          cards.forEach((card) => {
+
+            const amountEl = card.querySelector('.pricing-amount');
+
+            const periodEl = card.querySelector('.pricing-period');
+
+            if (!amountEl || !periodEl) return;
+
+
+
+            const monthly = amountEl.dataset.monthly;
+
+            const yearly = amountEl.dataset.yearly;
+
+
+
+            if (mode === 'yearly') {
+
+              amountEl.textContent = yearly;
+
+              periodEl.textContent = BILLING.yearly.period;
+
+            } else {
+
+              amountEl.textContent = monthly;
+
+              periodEl.textContent = BILLING.monthly.period;
+
+            }
+
+          });
+
+        }
+
+
+
+        options.forEach((btn) => {
+
+          btn.addEventListener('click', () => {
+
+            const mode = btn.dataset.billing;
+
+            if (!mode) return;
+
+            setBillingMode(mode);
+
+          });
+
+        });
+
+
+
+        // Initialize to monthly by default
+
+        setBillingMode('monthly');
+
+      })();
+
+    </script>
+
+  </section>
+
+
+
+  <!-- FAQ Section -->
+
+  <section id="faq" class="faq">
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <h2 class="section-title">FAQ</h2>
+
+      </div>
 
       <div class="faq-grid">
 
         <div class="faq-item">
 
-          <div class="faq-q">What happens when someone cancels?</div>
+          <h3 class="faq-q">Do I need my own Stripe account?</h3>
 
-          <div class="faq-a">
-
-            Stripe sends a subscription update event. GuildPass listens, finds the linked Discord user, and removes the paid role automatically.
-
-          </div>
+          <p class="faq-a">Yes. GuildPass connects to your Stripe account via Stripe Connect.</p>
 
         </div>
 
-
-
         <div class="faq-item">
 
-          <div class="faq-q">Do I need to give the bot admin?</div>
+          <h3 class="faq-q">Can I test before going live?</h3>
 
-          <div class="faq-a">
-
-            No. GuildPass only needs permission to manage the roles you configure. You keep ownership of your server and can revoke access at any time.
-
-          </div>
+          <p class="faq-a">Yes, you can run everything in Stripe test mode first.</p>
 
         </div>
 
-
-
         <div class="faq-item">
 
-          <div class="faq-q">Can I stop using GuildPass?</div>
+          <h3 class="faq-q">Does GuildPass read my DMs?</h3>
 
-          <div class="faq-a">
-
-            Yes. You can cancel your subscription at any time. Existing Discord roles won't be touched after that.
-
-          </div>
+          <p class="faq-a">No. GuildPass only manages roles in your server using Discord's permissions.</p>
 
         </div>
 
-
-
         <div class="faq-item">
 
-          <div class="faq-q">Will there be more advanced tiers?</div>
+          <h3 class="faq-q">Can I use multiple Discord servers?</h3>
 
-          <div class="faq-a">
-
-            Yes. v2 will introduce multiple tiers (Bronze / Silver / Gold), advanced rules, and multi-server options. v1 users will be able to upgrade easily.
-
-          </div>
+          <p class="faq-a">Yes, you can connect and manage multiple servers from the dashboard.</p>
 
         </div>
 
       </div>
 
-    </section>
+    </div>
+
+  </section>
 
 
 
-    <footer>
+  <!-- Final CTA -->
 
-      <div>© <span id="year"></span> GuildPass. All rights reserved. (formerly rolesync.app)</div>
+  <section class="final-cta">
 
-      <div class="footer-links">
+    <div class="container">
 
-        <a href="#!">Status</a>
+      <div class="cta-content">
 
-        <a href="#!">Docs</a>
+        <h2 class="cta-title">Ready to stop manually managing Discord roles?</h2>
 
-        <a href="#!" onclick="alert('Add your Terms of Service page here.')">Terms</a>
-
-        <a href="#!" onclick="alert('Add your Privacy Policy page here.')">Privacy</a>
+        <a href="/auth/discord/start" class="btn-primary btn-large">Connect Discord & Get Started</a>
 
       </div>
 
-    </footer>
+    </div>
 
-  </div>
+  </section>
 
 
 
-  <script>
+  <!-- Footer -->
 
-    document.getElementById("year").textContent = new Date().getFullYear();
+  <footer class="footer">
 
-  </script>
+    <div class="container">
 
-  <!-- Success Page Modal -->
+      <div class="footer-content">
+
+        <div>© <span id="year"></span> GuildPass. All rights reserved.</div>
+
+        <div class="footer-links">
+
+          <a href="https://github.com/rolesyncapp" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- Success Page Modal (preserved for existing functionality) -->
 
   <div id="success-page" style="display:none; text-align:center; padding:80px;">
 
@@ -1823,6 +815,10 @@
 
 
   <script>
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+
 
     // Simple router to show /success
 
